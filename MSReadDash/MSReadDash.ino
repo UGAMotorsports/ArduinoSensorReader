@@ -42,7 +42,7 @@ Serial.print(" ");
 Serial.println(); 
 */
 switch (canMsg.can_id) {
-case 1512: // dash broadcasting group
+case 1512: // dash broadcasting group (SUPER IMPORTANT)
 RPM = (float)(word(canMsg.data[2], canMsg.data[3]));
 CLT = (float)(word(canMsg.data[4], canMsg.data[5])); CLT = (CLT / 10);
 TPS = (float)(word(canMsg.data[6], canMsg.data[7])); TPS = (TPS / 10);
