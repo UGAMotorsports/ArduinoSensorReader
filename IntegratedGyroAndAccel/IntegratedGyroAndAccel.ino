@@ -6,22 +6,18 @@
 
 #include <SPI.h>          //Library for using SPI Communication 
 #include <mcp2515.h>      //Library for using CAN Communication
-#include "I2Cdev.h"
-#include "MPU6050.h"
+#include "src/MPU6050.h"
+#include "src/I2Cdev.h"
 #include "Wire.h"
 
 
-MPU6050 accelgyro;
-
-int16_t ax, ay, az;
-int16_t gx, gy, gz;
-
-#define OUTPUT_READABLE_ACCELGYRO
-
+MCP2515 mcp2515(2);
 struct can_frame canMsg;
 struct can_frame canMsg1;
-MCP2515 mcp2515(2);
-int s1, a, b;
+
+MPU6050 accelgyro;
+int16_t ax, ay, az;
+int16_t gx, gy, gz;
 
 void setup() {
   while (!Serial);
@@ -53,6 +49,8 @@ void setup() {
 void loop() {
   accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
 
+  //cleaned up the code
+  //the two for loops can be simplified into these two can messages being sent
   canMsg.can_id = 0x001;
   canMsg.can_dlc = 8;
   canMsg.data[0] = ay >> 8;
@@ -65,7 +63,7 @@ void loop() {
   canMsg.data[7] = 0;
   mcp2515.sendMessage(&canMsg); 
 
-  canMsg.can_id = 0x001;
+  canMsg.can_id = 0x002;
   canMsg.can_dlc = 8;
   canMsg.data[0] = gy >> 8;
   canMsg.data[1] = gy ^ 255;
