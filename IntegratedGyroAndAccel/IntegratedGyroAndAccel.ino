@@ -6,9 +6,10 @@
 
 #include <SPI.h>          //Library for using SPI Communication 
 #include <mcp2515.h>      //Library for using CAN Communication
-#include "src/MPU6050.h"
-#include "src/I2Cdev.h"
-#include "Wire.h"
+#include "src/MPU6050.h"  //library is downloaded from online
+#include "src/I2Cdev.h"   //library is downloaded from online
+#include "Wire.h"         //this arduino board is fine using Wire, so we can just go ahead and unconditionally 
+                          //import this without using compiler preprocessing.
 
 
 MCP2515 mcp2515(2);
@@ -29,12 +30,8 @@ void setup() {
   mcp2515.setBitrate(CAN_500KBPS,MCP_8MHZ); //Sets CAN at speed 500KBPS and Clock 8MHz
   mcp2515.setNormalMode();
 
-  // join I2C bus (I2Cdev library doesn't do this automatically)
-  #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
-      Wire.begin();
-  #elif I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_FASTWIRE
-      Fastwire::setup(400, true);
-  #endif
+  //we can just use the Wire.h library for this arduino uno board, it works fine, so no preprocesser commands needed.
+  Wire.begin();
 
   // initialize device
   Serial.println("Initializing I2C devices...");
@@ -53,10 +50,10 @@ void loop() {
   //the two for loops can be simplified into these two can messages being sent
   canMsg.can_id = 0x001;
   canMsg.can_dlc = 8;
-  canMsg.data[0] = ay >> 8;
-  canMsg.data[1] = ay ^ 255;
-  canMsg.data[2] = ax >> 8;
-  canMsg.data[3] = ax ^ 255;
+  canMsg.data[0] = ay >> 8; //each direction (x, y, and z) needs 2 bytes (16 bits). This shifts over ay to the left by 8 to isolate only the first byte.
+  canMsg.data[1] = ay ^ 255; // ^ is the xor operator. To xor a number with 255 will leave only the last 8 bits, which is the second byte we need.
+  canMsg.data[2] = ax >> 8;  // rightshift by 8 throws away the second byte and only leaves the first
+  canMsg.data[3] = ax ^ 255; // xor by 255 throws away the first byte and only leaves the second.
   canMsg.data[4] = az >> 8;
   canMsg.data[5] = az ^ 255;
   canMsg.data[6] = 0;
