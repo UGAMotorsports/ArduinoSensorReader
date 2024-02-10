@@ -57,10 +57,10 @@ void loop() {
   canMsg.can_id = 0x002;
   canMsg.can_dlc = 6;
   canMsg.data[0] = gy >> 8;
-  canMsg.data[1] = gy ^ 255;
+  canMsg.data[1] = gy & 255;
   canMsg.data[2] = gx >> 8;
-  canMsg.data[3] = gx ^ 255;
+  canMsg.data[3] = gx & 255;
   canMsg.data[4] = gz >> 8;
-  canMsg.data[5] = gz ^ 255;
+  canMsg.data[5] = gz & 255;
   mcp2515.sendMessage(&canMsg); 
 }
