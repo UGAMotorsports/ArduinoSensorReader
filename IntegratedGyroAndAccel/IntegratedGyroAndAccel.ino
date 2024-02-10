@@ -49,10 +49,9 @@ void loop() {
   //the two for loops can be simplified into these two can messages being sent
   canMsg.can_id = 0x001;
   canMsg.can_dlc = 3;
-  canMsg.data[0] = ay >> 8; //each direction (x, y, and z) needs 2 bytes (16 bits). This shifts over ay to the left by 8 to isolate only the first byte.
-  canMsg.data[1] = ax >> 8;  // rightshift by 8 throws away the second byte and only leaves the first
+  canMsg.data[0] = ay >> 8;
+  canMsg.data[1] = ax >> 8;
   canMsg.data[2] = az >> 8;
-  Serial.println(az >> 8);
   mcp2515.sendMessage(&canMsg);
 
   canMsg.can_id = 0x002;
