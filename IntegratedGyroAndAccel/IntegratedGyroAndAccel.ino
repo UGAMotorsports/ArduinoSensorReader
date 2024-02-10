@@ -45,18 +45,15 @@ void setup() {
 
 void loop() {
   accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
-
   //cleaned up the code
   //the two for loops can be simplified into these two can messages being sent
   canMsg.can_id = 0x001;
-  canMsg.can_dlc = 6;
+  canMsg.can_dlc = 3;
   canMsg.data[0] = ay >> 8; //each direction (x, y, and z) needs 2 bytes (16 bits). This shifts over ay to the left by 8 to isolate only the first byte.
-  canMsg.data[1] = ay ^ 255; // ^ is the xor operator. To xor a number with 255 will leave only the last 8 bits, which is the second byte we need.
-  canMsg.data[2] = ax >> 8;  // rightshift by 8 throws away the second byte and only leaves the first
-  canMsg.data[3] = ax ^ 255; // xor by 255 throws away the first byte and only leaves the second.
-  canMsg.data[4] = az >> 8;
-  canMsg.data[5] = az ^ 255;
-  mcp2515.sendMessage(&canMsg); 
+  canMsg.data[1] = ax >> 8;  // rightshift by 8 throws away the second byte and only leaves the first
+  canMsg.data[2] = az >> 8;
+  Serial.println(az >> 8);
+  mcp2515.sendMessage(&canMsg);
 
   canMsg.can_id = 0x002;
   canMsg.can_dlc = 6;
