@@ -4,6 +4,7 @@
 #include <Wire.h>
 #include <MPU6050.h>
 #include <I2Cdev.h>
+#include "MovingAverage.h"
 
 
 MPU6050 accelgyro;
@@ -17,13 +18,21 @@ void setup() {
 	// initialize the Accelerometer
   Serial.println("Initializing I2C devices...");
   accelgyro.initialize();
+
+  accelgyro.setDLPFMode(0);
 }
 
 void loop() {
   accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
+  setNewAverage(ax, ay, az, gx, gy, gz);
+
+  Serial.println(getNumberToReplace());
 
 	char buffer[100];
-	sprintf(buffer, "ax:%d,ay:%d,az:%d,gx:%d,gy:%d,gz:%d\n", ax, ay, az, gx, gy, gz);
+	sprintf(buffer, "ax:%d,ay:%d,az:%d,gx:%d,gy:%d,gz:%d\n", averageAx(), averageAy(), averageAz(), averageGx(), averageGy(), averageGz());
+  //sprintf(buffer, "ax:%d,ay:%d,az:%d,gx:%d,gy:%d,gz:%d\n", ax, ay, az, gz, gy, gz);
 	Serial.println(buffer);
 	
 }
+
+
