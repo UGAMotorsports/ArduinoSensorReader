@@ -7,8 +7,8 @@
 #include <SPI.h>          //Library for using SPI Communication
 #include <Wire.h>         //this arduino board is fine using Wire, so we can just go ahead and unconditionally import this
 #include <mcp2515.h>      //Library for using CAN Communication
-#include "lib/MPU6050.h"  //library is downloaded from online
-#include "lib/I2Cdev.h"   //library is downloaded from online
+#include <MPU6050.h>    //electronic cats library, downloaded from arduino library manager
+#include <I2Cdev.h>     //also downloaded from arduino library manager
 
 
 MCP2515 mcp2515(2);
