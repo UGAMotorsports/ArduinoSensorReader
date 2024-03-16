@@ -51,7 +51,6 @@ void loop() {
   canMsg.data[4] = gx >> 8;
   canMsg.data[5] = gz >> 8;
 
-
   mcp2515.sendMessage(&canMsg);
 
 }
