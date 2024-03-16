@@ -55,6 +55,7 @@ void loop() {
   canMsg.data[2] = az >> 8;
   mcp2515.sendMessage(&canMsg);
 
+  //TODO: each gyro direction can also jsut use one byte. This will allow us to just fit all the accel and gyro into one can frame.
   canMsg.can_id = 0x002;
   canMsg.can_dlc = 6;
   canMsg.data[0] = gy >> 8;
