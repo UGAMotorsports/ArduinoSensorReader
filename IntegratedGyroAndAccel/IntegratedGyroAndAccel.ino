@@ -32,6 +32,7 @@ uint8_t fifoBuffer[64];
 void setup() {
   #ifdef PRINTDEBUG
   Serial.begin(115200);
+  Serial.println("compiled with debug statements");
   #endif
   Wire.begin();  //for the i2c protocol devices (the mpu6050 accelerometer board)
   SPI.begin();   //for the SPI protocol devices (the mcp2515 can board)
