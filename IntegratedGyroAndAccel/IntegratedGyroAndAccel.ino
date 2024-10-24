@@ -46,10 +46,7 @@ void setup() {
 #ifdef PRINTDEBUG
   Serial.println("Initializing I2C devices...");
 #endif
-  accelgyro.initialize();
-  accelgyro.CalibrateAccel(6);
-  accelgyro.CalibrateGyro(6);
-  accelgyro.setDMPEnabled(true);
+  accelgyro.initialize(ACCEL_FS::A8G, GYRO_FS::G2000DPS);
 }
 
 void loop() {
@@ -75,6 +72,6 @@ void loop() {
 
   mcp2515.sendMessage(&canMsg);
 
-  delay(20);
+  delay(10);
 
 }
