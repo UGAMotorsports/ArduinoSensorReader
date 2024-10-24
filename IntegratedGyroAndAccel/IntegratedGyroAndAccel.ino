@@ -20,20 +20,15 @@ MCP2515 mcp2515(2);
 struct can_frame canMsg;
 
 MPU6050 accelgyro;
-Quaternion q;        // [w, x, y, z]         quaternion container
-VectorInt16 aa;      // [x, y, z]            accel sensor measurements
 VectorInt16 aaReal;  // [x, y, z]            gravity-free accel sensor measurements
-VectorFloat gravity;
-VectorFloat gyro;
-int x, y, z, th;
 
 uint8_t fifoBuffer[64];
 
 void setup() {
-  #ifdef PRINTDEBUG
+#ifdef PRINTDEBUG
   Serial.begin(115200);
   Serial.println("compiled with debug statements");
-  #endif
+#endif
   Wire.begin();  //for the i2c protocol devices (the mpu6050 accelerometer board)
   SPI.begin();   //for the SPI protocol devices (the mcp2515 can board)
 
@@ -58,11 +53,9 @@ void setup() {
 }
 
 void loop() {
-  accelgyro.dmpGetCurrentFIFOPacket(fifoBuffer);
-  accelgyro.dmpGetQuaternion(&q, fifoBuffer);
-  accelgyro.dmpGetAccel(&aa, fifoBuffer);
-  accelgyro.dmpGetGravity(&gravity, &q);
-  accelgyro.dmpGetLinearAccel(&aaReal, &aa, &gravity);
+  aaReal.x = accelgyro.getAccelerationX();
+  aaReal.y = accelgyro.getAccelerationY();
+  aaReal.z = accelgyro.getAccelerationZ();
 #ifdef PRINTDEBUG
   Serial.print("areal\t");
   Serial.print(aaReal.x);
@@ -72,13 +65,16 @@ void loop() {
   Serial.println(aaReal.z);
 #endif
   canMsg.can_id = 0x100;
-  canMsg.can_dlc = 3;
+  canMsg.can_dlc = 6;
   canMsg.data[0] = aaReal.x;
-  canMsg.data[1] = aaReal.y;
-  canMsg.data[2] = aaReal.z;
-  canMsg.data[3] = 0 >> 4;
-  canMsg.data[4] = 0 >> 4;
-  canMsg.data[5] = 0 >> 4;
+  canMsg.data[1] = aaReal.x >> 8;
+  canMsg.data[2] = aaReal.y;
+  canMsg.data[3] = aaReal.y >> 8;
+  canMsg.data[4] = aaReal.z;
+  canMsg.data[5] = aaReal.z >> 8;
 
   mcp2515.sendMessage(&canMsg);
+
+  delay(20);
+
 }
