@@ -4,8 +4,7 @@
 #include <Wire.h>
 #include <MPU6050.h>
 #include <I2Cdev.h>
-#include "MovingAverage.h"
-
+#include <MovingAverage.h>
 
 MPU6050 accelgyro;
 int16_t ax, ay, az;
