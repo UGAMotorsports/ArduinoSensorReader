@@ -52,7 +52,6 @@ void setup() {
   Serial.println("Initializing I2C devices...");
 #endif
   accelgyro.initialize();
-  accelgyro.dmpInitialize();
   accelgyro.CalibrateAccel(6);
   accelgyro.CalibrateGyro(6);
   accelgyro.setDMPEnabled(true);
@@ -74,12 +73,12 @@ void loop() {
 #endif
   canMsg.can_id = 0x100;
   canMsg.can_dlc = 3;
-  canMsg.data[0] = aaReal.x >> 8;
-  canMsg.data[1] = aaReal.y >> 8;
-  canMsg.data[2] = aaReal.z >> 8;
-  canMsg.data[3] = 0 >> 8;
-  canMsg.data[4] = 0 >> 8;
-  canMsg.data[5] = 0 >> 8;
+  canMsg.data[0] = aaReal.x;
+  canMsg.data[1] = aaReal.y;
+  canMsg.data[2] = aaReal.z;
+  canMsg.data[3] = 0 >> 4;
+  canMsg.data[4] = 0 >> 4;
+  canMsg.data[5] = 0 >> 4;
 
   mcp2515.sendMessage(&canMsg);
 }
