@@ -72,6 +72,6 @@ void loop() {
 
   mcp2515.sendMessage(&canMsg);
 
-  delay(10);
+  delay(100);
 
 }
