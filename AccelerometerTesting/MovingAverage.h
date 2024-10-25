@@ -1,21 +1,12 @@
 
-#ifndef MovingAverage
-#define MovingAverage
+class MovingAverage {
+  public:
+    MovingAverage(int framesize);
+    short getMovingAverage(short newValue);
 
-void setNewAverage(int ax, int ay, int az, int gx, int gy, int gz);
-
-int averageAx();
-
-int averageAy();
-
-int averageAz();
-
-int averageGx();
-
-int averageGy();
-
-int averageGz();
-
-int getNumberToReplace();
-
-#endif
+  private:
+    short* frame;
+    int frameSize;
+    int startLoc;
+    int total;
+};

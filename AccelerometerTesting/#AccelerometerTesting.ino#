@@ -30,6 +30,8 @@ void loop() {
   Serial.print(ay);
   Serial.print("\t");
   Serial.println(az);
+
+  
 	
 }
 
