@@ -1,17 +1,21 @@
 
 #include "MovingAverage.h"
-#include "Arduino.h"
+#include <Arduino.h>
 
 MovingAverage::MovingAverage(int frameSize) {
   this->frameSize = frameSize;
-  this->frame = (short*)malloc(frameSize * sizeof(short));
+  this->startLoc = 0;
+  this->frame = calloc(frameSize, sizeof(int16_t));
   this->total = 0;
 }
 
-short MovingAverage::getMovingAverage(short newValue) {
-  total = total - frame[startLoc % frameSize] + newValue;
-  frame[startLoc % frameSize] = newValue;
+int16_t MovingAverage::getMovingAverage(int16_t newValue) {
+  total = total - frame[startLoc] + newValue;
+  frame[startLoc] = newValue;
   startLoc++;
-  return total / frameSize;
+  if (startLoc >= frameSize) {
+    startLoc = 0;
+  }
+  return (total / (int64_t)frameSize);
 }
 

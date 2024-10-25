@@ -9,18 +9,18 @@
 
 MPU6050 accelgyro;
 int16_t ax, ay, az;
-MovingAverage maX(8), maY(8), maZ(8);
+MovingAverage maX(20), maY(20), maZ(20);
 
 void setup() {
-	Serial.begin(9600);
+	Serial.begin(115200);
 
   Wire.begin(); //for the i2c protocol devices (the mpu6050 accelerometer board)
 
 	// initialize the Accelerometer
   Serial.println("Initializing I2C devices...");
-  accelgyro.initialize();
+  accelgyro.initialize(ACCEL_FS::A8G, GYRO_FS::G2000DPS); //range of 8g [-4g, 4g]
+  accelgyro.CalibrateAccel(5);
 
-  accelgyro.setDLPFMode(0);
 }
 
 void loop() {
@@ -34,6 +34,7 @@ void loop() {
   Serial.print("\t");
   Serial.println(az);
 	
+  delay(20);
 }
 
 

@@ -1,12 +1,14 @@
 
+#include "Arduino.h"
+
 class MovingAverage {
   public:
     MovingAverage(int framesize);
-    short getMovingAverage(short newValue);
+    int16_t getMovingAverage(int16_t newValue);
 
   private:
-    short* frame;
-    int frameSize;
-    int startLoc;
-    int total;
+    int16_t* frame;
+    uint8_t* frameSize;
+    uint8_t startLoc;
+    int64_t total;
 };
