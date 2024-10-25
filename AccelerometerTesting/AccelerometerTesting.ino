@@ -8,7 +8,8 @@
 
 
 MPU6050 accelgyro;
-int16_t ax, ay, az, gx, gy, gz;
+int16_t ax, ay, az;
+MovingAverage maX(8), maY(8), maZ(8);
 
 void setup() {
 	Serial.begin(9600);
@@ -23,8 +24,10 @@ void setup() {
 }
 
 void loop() {
-  accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
-  Serial.print("areal\t") 	      ;
+  ax = maX.getMovingAverage(accelgyro.getAccelerationX());
+  ay = maY.getMovingAverage(accelgyro.getAccelerationY());
+  az = maZ.getMovingAverage(accelgyro.getAccelerationZ());
+  Serial.print("areal\t");
   Serial.print(ax);
   Serial.print("\t");
   Serial.print(ay);
