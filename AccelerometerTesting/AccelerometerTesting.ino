@@ -8,7 +8,9 @@
 
 MPU6050 accelgyro;
 int16_t ax, ay, az;
-MovingAverage maX(20), maY(20), maZ(20);
+VectorInt16 rawA;
+MovingAverage maX(10), maY(10), maZ(10);
+
 
 void setup() {
 	Serial.begin(115200);
@@ -17,23 +19,27 @@ void setup() {
 
 	// initialize the Accelerometer
   Serial.println("Initializing I2C devices...");
-  accelgyro.initialize(ACCEL_FS::A8G, GYRO_FS::G2000DPS); //range of 8g [-4g, 4g]
+  accelgyro.initialize(); 
   accelgyro.CalibrateAccel(5);
-
+  accelgyro.CalibrateGyro(5);
+  accelgyro.setFullScaleAccelRange(1); //range of 8g [-4g, 4g]
 }
 
 void loop() {
-  ax = maX.getMovingAverage(accelgyro.getAccelerationX());
-  ay = maY.getMovingAverage(accelgyro.getAccelerationY());
-  az = maZ.getMovingAverage(accelgyro.getAccelerationZ());
-  Serial.print("areal\t");
-  Serial.print(ax);
-  Serial.print("\t");
-  Serial.print(ay);
-  Serial.print("\t");
-  Serial.println(az);
-	
-  delay(20);
+    accelgyro.getAcceleration(&rawA.x, &rawA.y, &rawA.z);
+
+    ax = maX.getMovingAverage(rawA.x);
+    ay = maY.getMovingAverage(rawA.y);
+    az = maZ.getMovingAverage(rawA.z);
+    Serial.print("areal\t");
+    Serial.print(ax);
+    Serial.print("\t");
+    Serial.print(ay);
+    Serial.print("\t");
+    Serial.println(az);
+
+    delay(10);
+
 }
 
 
