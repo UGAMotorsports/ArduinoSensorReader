@@ -1,11 +1,11 @@
 
 class MovingAverage {
   public:
-    MovingAverage(int framesize);
+    MovingAverage(int framesize, short** framePointer);
     short getMovingAverage(short newValue);
 
   private:
-    short* frame;
+    short** frame;
     int frameSize;
     int startLoc;
     int total;
