@@ -1,6 +1,6 @@
 # Arduino sensor reader
 
-this project allows us to communicate and send sensor data from te arduino to out MegaSquirt ECU for data logging.
+this project allows us to communicate and send sensor data from an accelerometer from the arduino to our MegaSquirt ECU for data logging.
 
 ## LIBRARIES USED:
 
